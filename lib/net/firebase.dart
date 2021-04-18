@@ -42,7 +42,7 @@ class FlutterFireAuthService {
     String password,
     String displayName,
     String phoneNo,
-    String aadharNo,
+    String address,
     String type,
     String vehicleNo,
     String licenseNo,
@@ -53,7 +53,7 @@ class FlutterFireAuthService {
         email: email,
         password: password,
       );
-      userSetup(displayName, phoneNo, aadharNo, licenseNo);
+      userSetup(displayName, phoneNo, address, licenseNo);
       addVehicle(vehicleNo, type);
       Navigator.push(
         context,
@@ -71,7 +71,7 @@ class FlutterFireAuthService {
 Future<void> userSetup(
   String displayName,
   String phoneNo,
-  String aadharNo,
+  String address,
   String licenseNo,
 ) async {
   CollectionReference users = FirebaseFirestore.instance.collection('Users');
@@ -83,7 +83,7 @@ Future<void> userSetup(
         'displayname': displayName,
         'uid': uid,
         'phone': phoneNo,
-        'aadhar': aadharNo,
+        'address': address,
         'license': licenseNo,
       })
       .then((value) => print('User Added'))
