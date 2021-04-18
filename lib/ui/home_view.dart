@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login_app/drawers/my_vehicle.dart';
 import 'package:login_app/net/firebase.dart';
 import 'package:provider/provider.dart';
 
@@ -21,18 +22,44 @@ class _HomeVeiwState extends State<HomeVeiw> {
             DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
+                /*image: DecorationImage(
+                  image: AssetImage('assets/images/profile.png'),
+                  
+                ),*/
               ),
-              child: Text(
-                'User Name',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
+              child: Row(
+                children: [
+                  Text(
+                    'User Name',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                    ),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width / 3.0,
+                    height: 100.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: AssetImage('assets/images/profile.png'),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             ListTile(
               leading: Icon(Icons.car_rental),
               title: Text("My Vehicle"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyVehicle(),
+                  ),
+                );
+              },
             ),
             ListTile(
               leading: Icon(Icons.book_outlined),
@@ -45,6 +72,12 @@ class _HomeVeiwState extends State<HomeVeiw> {
             ListTile(
               leading: Icon(Icons.exit_to_app),
               title: Text("Sign Out"),
+              onTap: () {
+                context.read<FlutterFireAuthService>().signOut();
+                if (Navigator.of(context).canPop()) {
+                  Navigator.of(context).pop();
+                }
+              },
             ),
           ],
         ),

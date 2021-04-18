@@ -43,6 +43,7 @@ class FlutterFireAuthService {
     String displayName,
     String phoneNo,
     String aadharNo,
+    String type,
     String vehicleNo,
     String licenseNo,
     BuildContext context,
@@ -52,7 +53,8 @@ class FlutterFireAuthService {
         email: email,
         password: password,
       );
-      userSetup(displayName, phoneNo, aadharNo, vehicleNo, licenseNo);
+      userSetup(displayName, phoneNo, aadharNo, licenseNo);
+      addVehicle(vehicleNo, type);
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -70,19 +72,34 @@ Future<void> userSetup(
   String displayName,
   String phoneNo,
   String aadharNo,
-  String vehicleNo,
   String licenseNo,
 ) async {
   CollectionReference users = FirebaseFirestore.instance.collection('Users');
   FirebaseAuth _auth = FirebaseAuth.instance;
   String uid = _auth.currentUser.uid.toString();
-  users.add({
-    'displayname': displayName,
-    'uid': uid,
-    'phone': phoneNo,
-    'vehicle': vehicleNo,
-    'aadhar': aadharNo,
-    'license': licenseNo,
-  });
+  users
+      .doc(uid)
+      .set({
+        'displayname': displayName,
+        'uid': uid,
+        'phone': phoneNo,
+        'aadhar': aadharNo,
+        'license': licenseNo,
+      })
+      .then((value) => print('User Added'))
+      .catchError((error) => print('falied to add user: $error'));
   return;
+}
+
+Future<void> addVehicle(String id, String type) async {
+  String uid = FirebaseAuth.instance.currentUser.uid;
+  CollectionReference vehicles = FirebaseFirestore.instance
+      .collection('Users')
+      .doc(uid)
+      .collection('Vehicles');
+  vehicles
+      .doc(id)
+      .set({'VehicleNo': id, 'type': type})
+      .then((value) => print('Sucessfully Added'))
+      .catchError((error) => print('failed to add $error'));
 }
