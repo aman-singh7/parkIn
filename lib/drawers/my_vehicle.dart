@@ -38,13 +38,22 @@ class _MyVehicle extends State<MyVehicle> {
               }
               return ListView(
                 children: snapshot.data.docs.map((document) {
-                  return Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text('Type: ${document.data()['type']}'),
-                        Text('Vehicle Number: ${document.id}'),
-                      ],
+                  return Card(
+                    elevation: 2,
+                    shadowColor: Colors.grey[600],
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
+                      child: ListTile(
+                        leading: ( document.data()['type'] == 'Car' ? Icon(Icons.car_repair , color: Colors.blue, size: 40,) : Icon(Icons.motorcycle_outlined , color: Colors.blue, size: 40,)),
+                        title: Text(
+                          "${document.id}",
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey[600]
+                          ),
+                        ),
+                      ),
                     ),
                   );
                 }).toList(),

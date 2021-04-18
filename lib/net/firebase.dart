@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:login_app/ui/home_view.dart';
+import '../opening.dart';
 
 class FlutterFireAuthService {
   final FirebaseAuth _firebaseAuth;
@@ -33,8 +34,14 @@ class FlutterFireAuthService {
     }
   }
 
-  Future<void> signOut() async {
+  Future<void> signOut(BuildContext context) async {
     await _firebaseAuth.signOut();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => OpeningView(),
+      ),
+    );
   }
 
   Future<String> signUp(
