@@ -23,12 +23,12 @@ class _HomeVeiwState extends State<HomeVeiw> {
   GoogleMapController _controller;
   Api api = Api();
 
-  List<Marker> getMarker(){
+  List<Marker> getMarker() {
     return [
       Marker(
           markerId: MarkerId("1"),
           position: LatLng(25.224959546190142, 84.99172023136182),
-          onTap: (){
+          onTap: () {
             setState(() {
               destination = "XYZ Mall, Sector 12";
               isVisible = true;
@@ -36,12 +36,11 @@ class _HomeVeiwState extends State<HomeVeiw> {
           },
           infoWindow: InfoWindow(
             title: '1',
-          )
-      ),
+          )),
       Marker(
           markerId: MarkerId("2"),
           position: LatLng(25.22556198253419, 84.99364670346958),
-          onTap: (){
+          onTap: () {
             setState(() {
               destination = "parking 2";
               isVisible = true;
@@ -49,8 +48,7 @@ class _HomeVeiwState extends State<HomeVeiw> {
           },
           infoWindow: InfoWindow(
             title: '2',
-          )
-      ),
+          )),
     ];
   }
 
@@ -58,8 +56,8 @@ class _HomeVeiwState extends State<HomeVeiw> {
   Widget build(BuildContext context) {
     markers = getMarker();
     Location location = Location();
-    streamSubscription = location.onLocationChanged.listen((locationData){
-      if(mounted){
+    streamSubscription = location.onLocationChanged.listen((locationData) {
+      if (mounted) {
         setState(() {
           api.locationData = locationData;
         });
@@ -67,13 +65,18 @@ class _HomeVeiwState extends State<HomeVeiw> {
     });
     return Scaffold(
       appBar: AppBar(
-           title: Text(
-             "ParkIn",
-           ),
+        title: Text(
+          "ParkIn",
+        ),
         actions: [
-          IconButton(icon: Icon(Icons.search , color: Colors.white,), onPressed: null),
+          IconButton(
+              icon: Icon(
+                Icons.search,
+                color: Colors.white,
+              ),
+              onPressed: null),
         ],
-          ),
+      ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -142,27 +145,28 @@ class _HomeVeiwState extends State<HomeVeiw> {
         ),
       ),
       body: Stack(
-        children : <Widget>[
-          FutureBuilder<LocationData> (
-            future : api.getLocation(location),
-            builder: (BuildContext context, AsyncSnapshot<LocationData> snapshot) {
-              if(snapshot.data == null ){
+        children: <Widget>[
+          FutureBuilder<LocationData>(
+            future: api.getLocation(location),
+            builder:
+                (BuildContext context, AsyncSnapshot<LocationData> snapshot) {
+              if (snapshot.data == null) {
                 return Container(
-                  color : Colors.grey[400],
+                  color: Colors.grey[400],
                 );
-              }
-              else{
+              } else {
                 marker = Marker(
                   markerId: MarkerId("home"),
                   infoWindow: InfoWindow(
                     title: "home",
                     snippet: "current location",
                   ),
-                  onTap: (){
+                  /*onTap: (){
                     destination = "home";
                     isVisible = true;
-                  },
-                  position: LatLng( api.locationData.latitude , api.locationData.longitude),
+                  },*/
+                  position: LatLng(
+                      api.locationData.latitude, api.locationData.longitude),
                   icon: BitmapDescriptor.defaultMarkerWithHue(0.0),
                 );
                 markers.add(marker);
@@ -177,17 +181,17 @@ class _HomeVeiwState extends State<HomeVeiw> {
               }
             },
           ),
-          Bottomsheet(destination , isVisible),
+          Bottomsheet(destination, isVisible),
         ],
       ),
     );
   }
 
-  void dispose(){
-    if ( streamSubscription != null){
+  void dispose() {
+    if (streamSubscription != null) {
       streamSubscription.cancel();
     }
-    if( markers != null ){
+    if (markers != null) {
       markers.remove(marker);
     }
     super.dispose();

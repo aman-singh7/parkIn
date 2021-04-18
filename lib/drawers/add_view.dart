@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login_app/net/firebase.dart';
 
 class AddView extends StatefulWidget {
   @override
@@ -60,7 +61,7 @@ class _AddViewState extends State<AddView> {
             ),
             child: MaterialButton(
               onPressed: () async {
-                // TODO
+                await addVehicle(_vehicleNo.text.trim(), dropdownValue);
                 Navigator.of(context).pop();
               },
               child: Text('Add'),

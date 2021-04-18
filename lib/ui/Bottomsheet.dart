@@ -7,13 +7,13 @@ import 'payment.dart';
 class Bottomsheet extends StatefulWidget {
   final String destination;
   final bool isVisible;
-  Bottomsheet(this.destination , this.isVisible);
+  Bottomsheet(this.destination, this.isVisible);
   @override
   _BottomsheetState createState() => _BottomsheetState();
 }
 
 class _BottomsheetState extends State<Bottomsheet> {
-  static double duration = 1;
+  static double duration = 0.5;
   DateTime datetime = DateTime.now();
   @override
   Widget build(BuildContext context) {
@@ -23,15 +23,13 @@ class _BottomsheetState extends State<Bottomsheet> {
           initialChildSize: 0.30,
           maxChildSize: 0.96,
           minChildSize: 0.30,
-          builder: (context , _controller2){
+          builder: (context, _controller2) {
             return Container(
               decoration: BoxDecoration(
                   boxShadow: [
-                    BoxShadow(color: Colors.grey[700],
-                      offset: Offset(
-                          0.5,
-                          0.5
-                      ),
+                    BoxShadow(
+                      color: Colors.grey[700],
+                      offset: Offset(0.5, 0.5),
                       blurRadius: 10.0,
                       spreadRadius: 0.0,
                     ),
@@ -40,8 +38,7 @@ class _BottomsheetState extends State<Bottomsheet> {
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20.0),
                     topRight: Radius.circular(20.0),
-                  )
-              ),
+                  )),
               child: ListView(
                 controller: _controller2,
                 children: <Widget>[
@@ -54,7 +51,8 @@ class _BottomsheetState extends State<Bottomsheet> {
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.grey[500],
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
                           ),
                         ),
                       ),
@@ -65,7 +63,14 @@ class _BottomsheetState extends State<Bottomsheet> {
                       SizedBox(
                         width: 25.0,
                       ),
-                      Text("${widget.destination}" , style: TextStyle(color: Colors.blue[700] , fontFamily: 'Roboto' , fontWeight: FontWeight.bold , fontSize: 20 ),),
+                      Text(
+                        "${widget.destination}",
+                        style: TextStyle(
+                            color: Colors.blue[700],
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
+                      ),
                       SizedBox(
                         width: 10.0,
                       ),
@@ -77,7 +82,11 @@ class _BottomsheetState extends State<Bottomsheet> {
                       SizedBox(
                         width: 25.0,
                       ),
-                      Text("300m" , style: TextStyle(color: Colors.grey[600] , fontFamily: 'Roboto'),),
+                      Text(
+                        "300m",
+                        style: TextStyle(
+                            color: Colors.grey[600], fontFamily: 'Roboto'),
+                      ),
                     ],
                   ),
                   SizedBox(
@@ -88,9 +97,7 @@ class _BottomsheetState extends State<Bottomsheet> {
                     title: Text(
                       "Near XYZ Mall",
                       style: TextStyle(
-                          color: Colors.grey[600],
-                          fontFamily: 'Roboto'
-                      ),
+                          color: Colors.grey[600], fontFamily: 'Roboto'),
                     ),
                   ),
                   ListTile(
@@ -98,9 +105,7 @@ class _BottomsheetState extends State<Bottomsheet> {
                     title: Text(
                       "0123456789",
                       style: TextStyle(
-                          color: Colors.grey[600],
-                          fontFamily: 'Roboto'
-                      ),
+                          color: Colors.grey[600], fontFamily: 'Roboto'),
                     ),
                   ),
                   Row(
@@ -118,20 +123,25 @@ class _BottomsheetState extends State<Bottomsheet> {
                     ],
                   ),
                   ListTile(
-                    title: Text("${datetime.year}-${datetime.month}-${datetime.day}   ${datetime.hour} : ${datetime.minute}" ,
+                    title: Text(
+                      "${datetime.year}-${datetime.month}-${datetime.day}   ${datetime.hour} : ${datetime.minute}",
                       style: TextStyle(
                         fontFamily: 'Roboto',
                         fontWeight: FontWeight.bold,
-                      ),),
+                      ),
+                    ),
                     trailing: IconButton(
-                        icon: Icon( Icons.calendar_today_rounded , color: Colors.blue,),
+                        icon: Icon(
+                          Icons.calendar_today_rounded,
+                          color: Colors.blue,
+                        ),
                         onPressed: () async {
                           final selectedDate = await pickDate();
-                          if( selectedDate == null ){
+                          if (selectedDate == null) {
                             return;
                           }
                           final selectedTime = await pickTime();
-                          if(selectedTime == null){
+                          if (selectedTime == null) {
                             return;
                           }
                           setState(() {
@@ -143,25 +153,21 @@ class _BottomsheetState extends State<Bottomsheet> {
                               selectedTime.minute,
                             );
                           });
-
                         }),
                   ),
                   ListTile(
                     leading: Icon(Icons.timer),
-                    title: Text(
-                      "Duration"
-                    ),
+                    title: Text("Duration"),
                     subtitle: Text(
-                      "${duration} hrs",
+                      "$duration hrs",
                       style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold
-                      ),
+                          fontFamily: 'Roboto',
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
                     ),
                     trailing: IconButton(
-                      icon: Icon(Icons.add , color: Colors.blue),
-                      onPressed: (){
+                      icon: Icon(Icons.add, color: Colors.blue),
+                      onPressed: () {
                         setState(() {
                           duration += 0.5;
                         });
@@ -170,14 +176,18 @@ class _BottomsheetState extends State<Bottomsheet> {
                   ),
                   ListTile(
                     title: Text(
-                      "Choose vehicle" , style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Roboto'
-                    ),
+                      "Choose vehicle",
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Roboto'),
                     ),
                     trailing: IconButton(
-                      icon: Icon(Icons.keyboard_arrow_right_outlined , color: Colors.black, size: 30.0,),
+                      icon: Icon(
+                        Icons.keyboard_arrow_right_outlined,
+                        color: Colors.black,
+                        size: 30.0,
+                      ),
                       onPressed: null,
                     ),
                   ),
@@ -191,8 +201,7 @@ class _BottomsheetState extends State<Bottomsheet> {
                         style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
-                            fontFamily: 'Roboto'
-                        ),
+                            fontFamily: 'Roboto'),
                       ),
                     ],
                   ),
@@ -213,16 +222,20 @@ class _BottomsheetState extends State<Bottomsheet> {
                                 fontSize: 18,
                               ),
                               children: <TextSpan>[
-                                TextSpan(text: "100 " , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20 )),
+                                TextSpan(
+                                    text: "100 ",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20)),
                                 TextSpan(text: "Slots Already Booked")
-                              ]
-                          ),
+                              ]),
                         ),
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 16.0 , right: 16.0 , bottom: 16.0),
+                    padding:
+                        EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -238,29 +251,35 @@ class _BottomsheetState extends State<Bottomsheet> {
                                 fontSize: 18,
                               ),
                               children: <TextSpan>[
-                                TextSpan(text: "150 " , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20 )),
+                                TextSpan(
+                                    text: "150 ",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20)),
                                 TextSpan(text: "Slots Available")
-                              ]
-                          ),
+                              ]),
                         ),
                       ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 16.0 , right: 16.0 , top: 16.0 , bottom: 32.0),
-                    child: RaisedButton(
-                        onPressed: (){
+                    padding: const EdgeInsets.only(
+                        left: 16.0, right: 16.0, top: 16.0, bottom: 32.0),
+                    child: MaterialButton(
+                        onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Paymentview(),
+                              builder: (context) =>
+                                  Paymentview(datetime, duration),
                             ),
                           );
                         },
                         elevation: 10.0,
                         color: Colors.blue[900],
                         padding: EdgeInsets.all(18.0),
-                        shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(20.0)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0)),
                         child: Center(
                           child: Text(
                             "BOOK",
@@ -270,8 +289,7 @@ class _BottomsheetState extends State<Bottomsheet> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                        )
-                    ),
+                        )),
                   )
                 ],
               ),
@@ -280,7 +298,7 @@ class _BottomsheetState extends State<Bottomsheet> {
     );
   }
 
-  Future<DateTime> pickDate(){
+  Future<DateTime> pickDate() {
     Future<DateTime> date = showDatePicker(
       context: context,
       initialDate: datetime,
@@ -290,10 +308,10 @@ class _BottomsheetState extends State<Bottomsheet> {
     return date;
   }
 
-  Future<TimeOfDay> pickTime(){
+  Future<TimeOfDay> pickTime() {
     Future<TimeOfDay> time = showTimePicker(
       context: context,
-      initialTime: TimeOfDay( hour: datetime.hour , minute: datetime.minute),
+      initialTime: TimeOfDay(hour: datetime.hour, minute: datetime.minute),
     );
     return time;
   }

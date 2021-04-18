@@ -2,21 +2,35 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Paymentview extends StatefulWidget {
+  final DateTime _dateTime;
+  final double _duration;
+
+  Paymentview(this._dateTime, this._duration);
   @override
   _PaymentviewState createState() => _PaymentviewState();
 }
 
 class _PaymentviewState extends State<Paymentview> {
   final TextEditingController debitCardController = TextEditingController();
+  final double cost = 30;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Payment"),
+      ),
       body: ListView(
         children: <Widget>[
           Center(
             child: Padding(
-              padding: EdgeInsets.only(top: 8.0 , bottom: 8.0),
-              child: Text("Payment" , style: TextStyle(fontWeight: FontWeight.bold , fontFamily: 'Roboto' , fontSize: 25.0),),
+              padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+              child: Text(
+                "Invoice",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Roboto',
+                    fontSize: 25.0),
+              ),
             ),
           ),
           Row(
@@ -24,11 +38,14 @@ class _PaymentviewState extends State<Paymentview> {
               SizedBox(
                 width: 20.0,
               ),
-              Text("Booking for" , style: TextStyle(
-                color: Colors.blue[900],
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.bold,
-              ),)
+              Text(
+                "Booking for",
+                style: TextStyle(
+                  color: Colors.blue[900],
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.bold,
+                ),
+              )
             ],
           ),
           Padding(
@@ -37,28 +54,28 @@ class _PaymentviewState extends State<Paymentview> {
               elevation: 1,
               shadowColor: Colors.grey[600],
               child: ListTile(
-                leading: Icon(Icons.calendar_today_rounded , color: Colors.blue),
-                title: Text(
-                  "12/12/2022",
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
+                  leading:
+                      Icon(Icons.calendar_today_rounded, color: Colors.blue),
+                  title: Text(
+                    "${widget._dateTime.day}/${widget._dateTime.month}/${widget._dateTime.year}",
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                    ),
                   ),
-                ),
-                subtitle: Text(
-                  "2:00 - 3:00",
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
+                  subtitle: Text(
+                    "${widget._dateTime.hour} : ${widget._dateTime.minute}",
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                    ),
                   ),
-                ),
-                trailing: Text(
-                  "1.5 hrs",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              ),
+                  trailing: Text(
+                    "${widget._duration}",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )),
             ),
           ),
           Row(
@@ -66,26 +83,24 @@ class _PaymentviewState extends State<Paymentview> {
               SizedBox(
                 width: 20.0,
               ),
-              Text("At" , style: TextStyle(
-                  color: Colors.blue[900],
-                  fontFamily: 'Roboto'
-              ),)
+              Text(
+                "At",
+                style: TextStyle(color: Colors.blue[900], fontFamily: 'Roboto'),
+              )
             ],
           ),
           Card(
             elevation: 1,
             shadowColor: Colors.grey[600],
             child: ListTile(
-              leading: Icon(Icons.location_on , color: Colors.blue),
+              leading: Icon(Icons.location_on, color: Colors.blue),
               title: Text(
                 "XYZ mall , sector 12 ",
                 style: TextStyle(
                   fontFamily: 'Roboto',
                 ),
               ),
-              subtitle: Text(
-                ""
-              ),
+              subtitle: Text(""),
             ),
           ),
           SizedBox(
@@ -96,18 +111,21 @@ class _PaymentviewState extends State<Paymentview> {
               SizedBox(
                 width: 20.0,
               ),
-              Text("Vehicle no." , style: TextStyle(
-                color: Colors.blue[900],
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.bold,
-              ),)
+              Text(
+                "Vehicle no.",
+                style: TextStyle(
+                  color: Colors.blue[900],
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.bold,
+                ),
+              )
             ],
           ),
           Card(
             elevation: 1,
             shadowColor: Colors.grey[600],
             child: ListTile(
-              leading: Icon(Icons.car_repair , color: Colors.blue),
+              leading: Icon(Icons.car_repair, color: Colors.blue),
               title: Text(
                 "ABCDEF12345",
                 style: TextStyle(
@@ -122,22 +140,23 @@ class _PaymentviewState extends State<Paymentview> {
               SizedBox(
                 width: 20.0,
               ),
-              Text("Rate" , style: TextStyle(
-                color: Colors.blue,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.bold,
-              ),),
+              Text(
+                "Rate",
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               SizedBox(
                 width: 50.0,
               ),
               Card(
                 elevation: 1,
                 shadowColor: Colors.grey[600],
-                child:Padding(
+                child: Padding(
                   padding: EdgeInsets.all(4.0),
-                  child: Text(
-                    "Rs 30/hr"
-                  ),
+                  child: Text("Rs $cost/hr"),
                 ),
               )
             ],
@@ -169,18 +188,20 @@ class _PaymentviewState extends State<Paymentview> {
             ),
           ),
           Center(
-            child: RaisedButton(
+            child: MaterialButton(
               color: Colors.blue,
-              onPressed: (){
-
-              },
-              child: Text("Pay" , style: TextStyle(color: Colors.white , fontWeight: FontWeight.bold , fontFamily: 'Roboto'),),
+              onPressed: () {},
+              child: Text(
+                "Pay ${cost * widget._duration}",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Roboto'),
               ),
+            ),
           ),
-
         ],
       ),
     );
   }
 }
-
