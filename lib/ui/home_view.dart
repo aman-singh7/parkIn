@@ -7,54 +7,68 @@ import 'package:login_app/drawers/my_vehicle.dart';
 import 'package:login_app/net/firebase.dart';
 import 'package:provider/provider.dart';
 import 'Bottomsheet.dart';
+import 'package:login_app/Model/MarkerModel.dart';
 import 'package:login_app/net/location_api.dart';
 
 class HomeVeiw extends StatefulWidget {
   @override
-  _HomeVeiwState createState() => _HomeVeiwState();
+  HomeVeiwState createState() => HomeVeiwState();
 }
 
-class _HomeVeiwState extends State<HomeVeiw> {
+class HomeVeiwState extends State<HomeVeiw> {
   StreamSubscription<LocationData> streamSubscription;
   Marker marker;
   static bool isVisible = false;
-  static String destination = "";
-  List<Marker> markers;
+  Set<Marker> markers;
+  List<Markers> markersmodel;
+  static Markers currentMarker;
   GoogleMapController _controller;
   Api api = Api();
 
-  List<Marker> getMarker() {
+  List<Markers> getMarkers() {
     return [
-      Marker(
+      Markers(
+          Marker(
           markerId: MarkerId("1"),
           position: LatLng(25.224959546190142, 84.99172023136182),
           onTap: () {
             setState(() {
-              destination = "XYZ Mall, Sector 12";
+              currentMarker = markersmodel.elementAt(0);
               isVisible = true;
             });
           },
           infoWindow: InfoWindow(
             title: '1',
-          )),
-      Marker(
+          )),"XYZ Mall 12th Street",true,20
+      ),
+      Markers(Marker(
           markerId: MarkerId("2"),
           position: LatLng(25.22556198253419, 84.99364670346958),
           onTap: () {
             setState(() {
-              destination = "parking 2";
+              currentMarker = markersmodel.elementAt(1);
               isVisible = true;
             });
           },
           infoWindow: InfoWindow(
             title: '2',
-          )),
+          )), "parking2", false, 40)
     ];
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    markersmodel = getMarkers();
+    markers = markersmodel.map((Markers markers){
+      return markers.marker;
+    }).toSet();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    markers = getMarker();
+
     Location location = Location();
     streamSubscription = location.onLocationChanged.listen((locationData) {
       if (mounted) {
@@ -173,7 +187,7 @@ class _HomeVeiwState extends State<HomeVeiw> {
                 return GoogleMap(
                   mapType: MapType.normal,
                   initialCameraPosition: api.userPosition,
-                  markers: markers.toSet(),
+                  markers: markers,
                   onMapCreated: (controller) {
                     _controller = controller;
                   },
@@ -181,7 +195,7 @@ class _HomeVeiwState extends State<HomeVeiw> {
               }
             },
           ),
-          Bottomsheet(destination, isVisible),
+          Bottomsheet(isVisible),
         ],
       ),
     );
