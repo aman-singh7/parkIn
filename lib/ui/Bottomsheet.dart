@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:login_app/Model/MarkerModel.dart';
+import 'package:login_app/model/marker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'home_view.dart';
 import 'dart:ui';
@@ -77,12 +77,17 @@ class _BottomsheetState extends State<Bottomsheet> {
                       SizedBox(
                         width: 10.0,
                       ),
-                      IconButton(icon: widget.markers.isFavourite ? Icon(Icons.star) : Icon(Icons.star_border),
-                          color:  widget.markers.isFavourite ? Colors.yellow : null ,
-                          onPressed: (){
-                              setState(() {
-                                    widget.markers.isFavourite = !widget.markers.isFavourite;
-                              });
+                      IconButton(
+                          icon: widget.markers.isFavourite
+                              ? Icon(Icons.star)
+                              : Icon(Icons.star_border),
+                          color:
+                              widget.markers.isFavourite ? Colors.yellow : null,
+                          onPressed: () {
+                            setState(() {
+                              widget.markers.isFavourite =
+                                  !widget.markers.isFavourite;
+                            });
                           }),
                     ],
                   ),

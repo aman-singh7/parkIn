@@ -2,8 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:login_app/model/userInfo.dart';
+import 'package:login_app/net/retrieveUserInfo.dart';
 import 'package:login_app/ui/home_view.dart';
 import '../opening.dart';
+import '../net/userInfoDatabase.dart';
 
 class FlutterFireAuthService {
   final FirebaseAuth _firebaseAuth;
@@ -22,10 +25,14 @@ class FlutterFireAuthService {
         email: email,
         password: password,
       );
+      UserInformation infoUser = await retrieveInfo();
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => HomeVeiw(),
+          builder: (context) => HomeVeiw(
+            displayname: infoUser.displayname,
+            email: infoUser.email,
+          ),
         ),
       );
       return 'Success';
@@ -60,12 +67,19 @@ class FlutterFireAuthService {
         email: email,
         password: password,
       );
-      userSetup(displayName, phoneNo, address, licenseNo);
+      FirebaseAuth auth = FirebaseAuth.instance;
+      UpdateUserInfo(
+              uid: auth.currentUser.uid.toString(),
+              email: auth.currentUser.email.toString())
+          .userSetup(displayName, phoneNo, address, licenseNo);
       addVehicle(vehicleNo, type);
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => HomeVeiw(),
+          builder: (context) => HomeVeiw(
+            displayname: displayName,
+            email: email,
+          ),
         ),
       );
       return 'Success';
@@ -73,29 +87,6 @@ class FlutterFireAuthService {
       return e.message;
     }
   }
-}
-
-Future<void> userSetup(
-  String displayName,
-  String phoneNo,
-  String address,
-  String licenseNo,
-) async {
-  CollectionReference users = FirebaseFirestore.instance.collection('Users');
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  String uid = _auth.currentUser.uid.toString();
-  users
-      .doc(uid)
-      .set({
-        'displayname': displayName,
-        'uid': uid,
-        'phone': phoneNo,
-        'address': address,
-        'license': licenseNo,
-      })
-      .then((value) => print('User Added'))
-      .catchError((error) => print('falied to add user: $error'));
-  return;
 }
 
 Future<void> addVehicle(String id, String type) async {

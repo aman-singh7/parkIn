@@ -5,12 +5,18 @@ import 'package:location/location.dart';
 import 'dart:async';
 import 'package:login_app/drawers/my_vehicle.dart';
 import 'package:login_app/net/firebase.dart';
+import 'package:login_app/net/userInfoDatabase.dart';
 import 'package:provider/provider.dart';
 import 'Bottomsheet.dart';
-import 'package:login_app/Model/MarkerModel.dart';
+import 'package:login_app/model/marker.dart';
+import 'package:login_app/model/userInfo.dart';
+import '../net/retrieveUserInfo.dart';
 import 'package:login_app/net/location_api.dart';
 
 class HomeVeiw extends StatefulWidget {
+  final String displayname;
+  final String email;
+  HomeVeiw({this.displayname, this.email});
   @override
   HomeVeiwState createState() => HomeVeiwState();
 }
@@ -29,46 +35,52 @@ class HomeVeiwState extends State<HomeVeiw> {
     return [
       Markers(
           Marker(
-          markerId: MarkerId("1"),
-          position: LatLng(25.224959546190142, 84.99172023136182),
-          onTap: () {
-            setState(() {
-              currentMarker = markersmodel.elementAt(0);
-              isVisible = true;
-            });
-          },
-          infoWindow: InfoWindow(
-            title: '1',
-          )),"XYZ Mall 12th Street",true,20
-      ),
-      Markers(Marker(
-          markerId: MarkerId("2"),
-          position: LatLng(25.22556198253419, 84.99364670346958),
-          onTap: () {
-            setState(() {
-              currentMarker = markersmodel.elementAt(1);
-              isVisible = true;
-            });
-          },
-          infoWindow: InfoWindow(
-            title: '2',
-          )), "parking2", false, 40)
+              markerId: MarkerId("1"),
+              position: LatLng(25.224959546190142, 84.99172023136182),
+              onTap: () {
+                setState(() {
+                  currentMarker = markersmodel.elementAt(0);
+                  isVisible = true;
+                });
+              },
+              infoWindow: InfoWindow(
+                title: '1',
+              )),
+          "XYZ Mall 12th Street",
+          true,
+          20),
+      Markers(
+          Marker(
+              markerId: MarkerId("2"),
+              position: LatLng(25.22556198253419, 84.99364670346958),
+              onTap: () {
+                setState(() {
+                  currentMarker = markersmodel.elementAt(1);
+                  isVisible = true;
+                });
+              },
+              infoWindow: InfoWindow(
+                title: '2',
+              )),
+          "parking2",
+          false,
+          40)
     ];
   }
 
   @override
   void initState() {
     // TODO: implement initState
+
     super.initState();
     markersmodel = getMarkers();
-    markers = markersmodel.map((Markers markers){
+    markers = markersmodel.map((Markers markers) {
       return markers.marker;
     }).toSet();
   }
 
   @override
   Widget build(BuildContext context) {
-
     Location location = Location();
     streamSubscription = location.onLocationChanged.listen((locationData) {
       if (mounted) {
@@ -105,22 +117,40 @@ class HomeVeiwState extends State<HomeVeiw> {
               ),
               child: Row(
                 children: [
-                  Text(
-                    'User Name',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                    ),
+                  Column(
+                    children: [
+                      Text(
+                        "Aman",
+                        //widget.displayname,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                      Text(
+                        "Email",
+                        //widget.email,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width / 3.0,
-                    height: 100.0,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/profile.png'),
+                  InkWell(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 3.0,
+                      height: 100.0,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/profile.png'),
+                        ),
                       ),
                     ),
+                    onTap: () {
+                      print('Welcome to Profile Page');
+                    },
                   ),
                 ],
               ),
@@ -144,6 +174,11 @@ class HomeVeiwState extends State<HomeVeiw> {
             ListTile(
               leading: Icon(Icons.star_border),
               title: Text("Favourites"),
+              onTap: () async {
+                UserInformation info = await retrieveInfo();
+                print(info.displayname);
+                print(info.email);
+              },
             ),
             ListTile(
               leading: Icon(Icons.exit_to_app),
